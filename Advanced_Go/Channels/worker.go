@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func worker(id int, jobs <-chan int, results chan<- int){
+func assignjob(id int, jobs <-chan int, results chan<- int){
 	for j := range jobs{
 		fmt.Println("Worker",id,"processing job",j)
 		time.Sleep(time.Second)
@@ -14,13 +14,13 @@ func worker(id int, jobs <-chan int, results chan<- int){
 	}
 }
 
-func main(){
+func worker(){
 	const numJobs = 5
 	jobs := make(chan int, numJobs)
 	results := make(chan int, numJobs)
 	
 	for w:=1;w<=3;w++{
-		go worker(w,jobs,results)
+		go assignjob(w,jobs,results)
 	}
 
 	time.Sleep(3*time.Second)
